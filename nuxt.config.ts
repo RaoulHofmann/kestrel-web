@@ -6,8 +6,8 @@ export default defineNuxtConfig({
 
   css: ['~/assets/css/main.css'],
 
-  // GitHub Pages serves this repo at /kestrel-web/. The deploy workflow sets
-  // NUXT_APP_BASE_URL; local dev falls back to the site root.
+  // Served from the root of the custom domain (kestrel.raoulhofmann.xyz).
+  // NUXT_APP_BASE_URL can override this (e.g. for a /repo/ project site).
   app: {
     baseURL: process.env.NUXT_APP_BASE_URL || '/',
     head: {

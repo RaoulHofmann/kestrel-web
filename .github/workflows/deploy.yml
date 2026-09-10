@@ -30,8 +30,6 @@ jobs:
 
       - name: Generate static site
         run: npm run generate
-        env:
-          NUXT_APP_BASE_URL: /kestrel-web/
 
       - uses: actions/configure-pages@v5
 
