@@ -1,0 +1,20 @@
+# Dependencies
+node_modules
+
+# Nuxt build output
+.nuxt
+.output
+.data
+dist
+
+# Environment
+.env
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor / OS
+.DS_Store
+.idea
+.vscode

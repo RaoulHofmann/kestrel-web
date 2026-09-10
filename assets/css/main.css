@@ -1,0 +1,90 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+@theme {
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Playfair Display", Georgia, "Times New Roman", serif;
+}
+
+/* Deeper green primary: shifted one step down from the Tailwind default so
+   buttons and accents read as richer and less washed out. `static` forces the
+   variables to be emitted even though no `green-*` utility class uses them. */
+@theme static {
+  --color-green-50: oklch(96.2% 0.044 156.743);
+  --color-green-100: oklch(92.5% 0.084 155.995);
+  --color-green-200: oklch(87.1% 0.15 154.449);
+  --color-green-300: oklch(79.2% 0.209 151.711);
+  --color-green-400: oklch(72.3% 0.219 149.579);
+  --color-green-500: oklch(62.7% 0.194 149.214);
+  --color-green-600: oklch(52.7% 0.154 150.069);
+  --color-green-700: oklch(44.8% 0.119 151.328);
+  --color-green-800: oklch(39.3% 0.095 152.535);
+  --color-green-900: oklch(26.6% 0.065 152.934);
+  --color-green-950: oklch(20% 0.05 153);
+}
+
+:root {
+  --kestrel-mine: var(--ui-color-primary-400);
+  --kestrel-market: var(--ui-color-info-400);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Thin editorial rules used throughout the layout, matching the reference. */
+.kestrel-rule {
+  height: 1px;
+  background: var(--ui-border);
+}
+
+@keyframes kestrel-flash {
+  from {
+    background-color: color-mix(in oklab, var(--ui-primary) 22%, transparent);
+  }
+}
+
+.kestrel-flash {
+  animation: kestrel-flash 1s ease-out;
+}
+
+@keyframes kestrel-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.kestrel-slide-in {
+  animation: kestrel-slide-in 0.5s ease-out both;
+}
+
+@keyframes kestrel-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.kestrel-cursor {
+  animation: kestrel-blink 1.1s step-end infinite;
+}
+
+/* Scrollbars in the dark editorial style. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--ui-border) transparent;
+}
