@@ -82,8 +82,8 @@ const explore = [
             </p>
             <div class="mt-10 flex flex-wrap items-center gap-3">
               <NuxtLink to="/map">
-                <UButton color="primary" size="lg" trailing-icon="i-lucide-arrow-right">
-                  Open the map
+                <UButton color="neutral" variant="outline" size="lg" icon="i-lucide-orbit">
+                  Galaxy map
                 </UButton>
               </NuxtLink>
               <NuxtLink to="/world">
@@ -205,13 +205,7 @@ const explore = [
             </UButton>
           </NuxtLink>
           <NuxtLink to="/guide">
-            <UButton
-              color="neutral"
-              variant="outline"
-              size="lg"
-              icon="i-lucide-rocket"
-              class="border-white/40 text-white hover:bg-white hover:text-black"
-            >
+            <UButton color="neutral" variant="soft" size="lg" icon="i-lucide-rocket">
               Read the API guide
             </UButton>
           </NuxtLink>
