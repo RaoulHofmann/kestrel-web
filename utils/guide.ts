@@ -26,44 +26,29 @@ const TOKEN = '<your access token or kestrel_… API key>'`
 
 export const travelGuide = {
   body:
-    'Travel is deliberately one lane per order, so crossing the galaxy means chaining hops. The lane graph is public: fetch the catalog, find the shortest route, then send a travel order per hop and wait for each to clear before the next.',
-  code: `// 1. Build the lane graph from the catalog
+    'Travel moves exactly one lane per order, so crossing the galaxy means chaining hops. Fetch the catalog to see which systems your current one connects to, send a travel order, then wait for the ship to go idle before sending the next hop.',
+  code: {
+    curl: `# the catalog lists each system's neighbouring lane keys
+curl -s $BASE/galaxy
+
+# travel is one lane per order — wait for it to clear, then send the next hop
+curl -s -X POST $BASE/ships/{{ship_id}}/orders \\
+  -H "authorization: Bearer $TOKEN" \\
+  -H 'content-type: application/json' \\
+  -d '{"type":"travel","to_system":"{{to_system}}"}'`,
+    javascript: `// 1. each system lists the lane keys it connects to
 const galaxy = (await (await fetch(BASE + '/galaxy')).json()).data
-const lanes = Object.fromEntries(galaxy.map((s) => [s.key, s.lanes]))
+const here = galaxy.find((s) => s.key === '{{home_system}}')
+console.log(here.lanes) // e.g. ['vega', 'altair']
 
-// 2. Shortest route by lane count (breadth-first search)
-function route(from, to) {
-  const queue = [[from]]
-  const seen = new Set([from])
-  while (queue.length) {
-    const path = queue.shift()
-    const node = path[path.length - 1]
-    if (node === to) return path
-    for (const next of lanes[node] ?? []) {
-      if (!seen.has(next)) {
-        seen.add(next)
-        queue.push([...path, next])
-      }
-    }
-  }
-  return null
-}
-
-// 3. Hop one lane at a time, waiting for each order to clear
-for (const hop of route('{{home_system}}', '{{to_system}}').slice(1)) {
-  await fetch(BASE + '/ships/{{ship_id}}/orders', {
-    method: 'POST',
-    headers: { 'content-type': 'application/json', authorization: 'Bearer ' + TOKEN },
-    body: JSON.stringify({ type: 'travel', to_system: hop })
-  })
-  while (true) {
-    const ship = (await (await fetch(BASE + '/ships/{{ship_id}}', {
-      headers: { authorization: 'Bearer ' + TOKEN }
-    })).json()).data
-    if (!ship.order) break
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-  }
-}`,
+// 2. travel is one lane per order — send a hop, wait for the order to clear,
+//    then send the next from the new system
+await fetch(BASE + '/ships/{{ship_id}}/orders', {
+  method: 'POST',
+  headers: { 'content-type': 'application/json', authorization: 'Bearer ' + TOKEN },
+  body: JSON.stringify({ type: 'travel', to_system: '{{to_system}}' })
+})`
+  },
   notes: ['A system’s rows are materialised the first time a ship reaches or views it — a lane can point at a system that does not exist yet.']
 }
 
@@ -282,4 +267,33 @@ curl -s $BASE/ships/{{ship_id}} -H "authorization: Bearer $TOKEN"`,
     },
     notes: ['PubSub topics are ship:{id}, site:{id} and company:{id}.']
   }
+]
+
+export interface Endpoint {
+  method: string
+  path: string
+  auth: string
+  description: string
+}
+
+export const endpoints: Endpoint[] = [
+  { method: 'POST', path: '/auth/signup', auth: '—', description: 'Register an email/password account; returns a session.' },
+  { method: 'POST', path: '/auth/login', auth: '—', description: 'Password grant; returns a session.' },
+  { method: 'POST', path: '/auth/refresh', auth: '—', description: 'Refresh-token grant; returns a new session.' },
+  { method: 'POST', path: '/auth/logout', auth: 'bearer', description: 'Revoke the session behind the access token.' },
+  { method: 'GET', path: '/galaxy', auth: '—', description: 'Premade systems and the lanes between them.' },
+  { method: 'POST', path: '/companies', auth: 'optional', description: 'Create a company; returns an api_key once.' },
+  { method: 'GET', path: '/companies/:id', auth: 'bearer', description: 'Company profile, credits and home system.' },
+  { method: 'GET', path: '/companies/:company_id/ships', auth: 'bearer', description: 'List the company’s ships.' },
+  { method: 'POST', path: '/companies/:company_id/ships', auth: 'bearer', description: 'Register a ship; it spawns at home.' },
+  { method: 'GET', path: '/companies/:company_id/api_keys', auth: 'bearer', description: 'List API keys (prefixes only).' },
+  { method: 'POST', path: '/companies/:company_id/api_keys', auth: 'bearer', description: 'Mint an API key; raw key returned once.' },
+  { method: 'DELETE', path: '/api_keys/:id', auth: 'bearer', description: 'Revoke an API key (owner only).' },
+  { method: 'GET', path: '/ships/:id', auth: 'bearer', description: 'Live ship state, including the current order.' },
+  { method: 'POST', path: '/ships/:id/orders', auth: 'bearer', description: 'Send a move, travel or mine order.' },
+  { method: 'POST', path: '/ships/:id/sell', auth: 'bearer', description: 'Sell cargo at the docked market.' },
+  { method: 'POST', path: '/ships/:id/buy', auth: 'bearer', description: 'Buy cargo at the docked market.' },
+  { method: 'GET', path: '/sites/:id', auth: 'bearer', description: 'Site status: ore remaining or prices.' },
+  { method: 'GET', path: '/systems/:id', auth: 'bearer', description: 'A system’s planets and their sites.' },
+  { method: 'GET', path: '/me', auth: 'bearer', description: 'Who the bearer is, plus company and keys.' }
 ]

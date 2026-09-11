@@ -2,7 +2,14 @@
 const config = useRuntimeConfig()
 const auth = useAuthStore()
 const route = useRoute()
+const colorMode = useColorMode()
 const open = ref(false)
+
+const isDark = computed(() => colorMode.value === 'dark')
+
+function toggleTheme() {
+  colorMode.preference = isDark.value ? 'light' : 'dark'
+}
 
 const apiBase = computed(() => String(config.public.apiBase || 'https://kestrel-iomeaw.fly.dev'))
 const docsUrl = computed(() => `${apiBase.value.replace(/\/+$/, '')}/`)
@@ -56,6 +63,19 @@ async function signOut() {
       </nav>
 
       <div class="hidden items-center gap-3 md:flex">
+        <ClientOnly>
+          <UButton
+            :icon="isDark ? 'i-lucide-sun' : 'i-lucide-moon'"
+            :aria-label="isDark ? 'Switch to light theme' : 'Switch to dark theme'"
+            color="neutral"
+            variant="ghost"
+            size="sm"
+            @click="toggleTheme"
+          />
+          <template #fallback>
+            <span class="size-8" />
+          </template>
+        </ClientOnly>
         <template v-if="auth.isAuthenticated">
           <NuxtLink to="/dashboard">
             <UButton color="primary" variant="soft" size="sm" icon="i-lucide-gauge">Dashboard</UButton>
@@ -90,6 +110,16 @@ async function signOut() {
           {{ link.label }}
         </NuxtLink>
         <a :href="docsUrl" target="_blank" rel="noopener" class="py-2 text-sm text-muted">API docs</a>
+        <ClientOnly>
+          <button
+            type="button"
+            class="flex items-center gap-2 py-2 text-left text-sm text-muted"
+            @click="toggleTheme"
+          >
+            <UIcon :name="isDark ? 'i-lucide-sun' : 'i-lucide-moon'" class="size-4" />
+            {{ isDark ? 'Light theme' : 'Dark theme' }}
+          </button>
+        </ClientOnly>
         <div class="mt-2 border-t border-default pt-3">
           <template v-if="auth.isAuthenticated">
             <NuxtLink to="/dashboard" @click="open = false">

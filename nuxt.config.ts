@@ -53,12 +53,14 @@ export default defineNuxtConfig({
         'lucide:log-out',
         'lucide:mail-check',
         'lucide:menu',
+        'lucide:moon',
         'lucide:orbit',
         'lucide:pencil',
         'lucide:plug-zap',
         'lucide:radio',
         'lucide:refresh-cw',
         'lucide:rocket',
+        'lucide:sun',
         'lucide:table-2',
         'lucide:trash-2',
         'lucide:triangle-alert',
@@ -68,8 +70,8 @@ export default defineNuxtConfig({
   },
 
   colorMode: {
-    preference: 'dark',
-    fallback: 'dark',
+    preference: 'light',
+    fallback: 'light',
     classSuffix: ''
   },
 

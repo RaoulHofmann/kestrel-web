@@ -89,9 +89,6 @@ const explore = [
               <NuxtLink to="/world">
                 <UButton color="neutral" variant="outline" size="lg" icon="i-lucide-table-2">World info</UButton>
               </NuxtLink>
-              <NuxtLink to="/login">
-                <UButton color="neutral" variant="ghost" size="lg" icon="i-lucide-log-in">Sign in</UButton>
-              </NuxtLink>
             </div>
           </div>
 
