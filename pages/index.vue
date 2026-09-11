@@ -49,6 +49,12 @@ const explore = [
     body: 'Live tables of every ship and site, plus a running activity feed.'
   },
   {
+    to: '/guide',
+    icon: 'i-lucide-rocket',
+    title: 'Build a bot',
+    body: 'Step-by-step API guide: create a company, register a ship, mine, travel and trade.'
+  },
+  {
     to: 'docs',
     icon: 'i-lucide-book-open',
     title: 'API reference',
@@ -156,7 +162,7 @@ const explore = [
     <section class="border-b border-default">
       <UContainer class="py-16 lg:py-20">
         <h2 class="font-display text-4xl font-bold">Explore</h2>
-        <div class="mt-10 grid gap-8 md:grid-cols-3">
+        <div class="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           <template v-for="item in explore" :key="item.title">
             <NuxtLink v-if="item.to !== 'docs'" :to="item.to" class="group block border-t-2 border-default pt-5 transition-colors hover:border-primary">
               <UIcon :name="item.icon" class="size-6 text-primary" />
@@ -201,14 +207,15 @@ const explore = [
               Sign in or sign up
             </UButton>
           </NuxtLink>
-          <NuxtLink to="/map">
+          <NuxtLink to="/guide">
             <UButton
               color="neutral"
               variant="outline"
               size="lg"
+              icon="i-lucide-rocket"
               class="border-white/40 text-white hover:bg-white hover:text-black"
             >
-              See the galaxy
+              Read the API guide
             </UButton>
           </NuxtLink>
         </div>

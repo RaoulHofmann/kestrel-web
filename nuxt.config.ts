@@ -43,6 +43,7 @@ export default defineNuxtConfig({
         'lucide:arrow-up-right',
         'lucide:ban',
         'lucide:book-open',
+        'lucide:check',
         'lucide:coins',
         'lucide:copy',
         'lucide:cpu',
@@ -90,7 +91,8 @@ export default defineNuxtConfig({
     '/map': { ssr: false },
     '/world': { ssr: false },
     '/login': { ssr: false },
-    '/dashboard': { ssr: false }
+    '/dashboard': { ssr: false },
+    '/guide': { ssr: false }
   },
 
   nitro: {

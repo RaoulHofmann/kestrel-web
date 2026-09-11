@@ -15,6 +15,7 @@ const year = new Date().getFullYear()
       <nav class="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-muted">
         <NuxtLink to="/map" class="transition-colors hover:text-default">Galaxy map</NuxtLink>
         <NuxtLink to="/world" class="transition-colors hover:text-default">World info</NuxtLink>
+        <NuxtLink to="/guide" class="transition-colors hover:text-default">API guide</NuxtLink>
         <a :href="docsUrl" target="_blank" rel="noopener" class="transition-colors hover:text-default">
           API docs
         </a>

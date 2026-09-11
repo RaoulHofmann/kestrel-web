@@ -10,7 +10,8 @@ const docsUrl = computed(() => `${apiBase.value.replace(/\/+$/, '')}/`)
 const links = [
   { label: 'Home', to: '/' },
   { label: 'Map', to: '/map' },
-  { label: 'World', to: '/world' }
+  { label: 'World', to: '/world' },
+  { label: 'Guide', to: '/guide' }
 ]
 
 function isActive(to: string) {
